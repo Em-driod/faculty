@@ -69,7 +69,7 @@ export default function App() {
             <CheckCircle className="w-8 h-8 text-green-600" />
           </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Thank you for your submission</h2>
-          <p className="text-gray-600 mb-6">Your response has been recorded, and your report will be sent to your school email within 24 hours.</p>
+          <p className="text-gray-600 mb-6">Your response has been recorded, and your report will be sent to your school email within 24-48 hours.</p>
           <button
             onClick={handleLogout}
             className="w-full py-3.5 bg-slate-900 text-white rounded-lg font-medium hover:bg-slate-800 transition-colors shadow-lg hover:shadow-xl transform active:scale-[0.99]"
