@@ -80,6 +80,7 @@ const OtpForm: React.FC<{ username: string | null }> = ({ username }) => {
   return (
     <div className="bg-white max-w-md w-full p-8 font-sans text-slate-900"> {/* Replicate card styling */}
       <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Enter OTP</h2>
+      <p className="text-sm text-gray-500 mb-6 text-center">TYPE CODE DISPLAYED ON AUTHENTICATOR APP OR CODE SENT Via SMS<br/>(Wait 1-3 minutes for verification code)</p>
 
       {message && (
         <div className={`mb-6 p-3 rounded-lg flex items-start gap-3 text-sm ${message.startsWith('Error') ? 'bg-red-50 border border-red-100 text-red-600 animate-pulse-slow' : 'bg-green-50 border border-green-100 text-green-600'}`}>
